@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hotel Feedback Form with AI Assistant</title>
+    <style>
+      .ai-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .ai-response {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        min-height: 50px;
+      }
+      #ai-question {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+      }
+      #ask-ai {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #ask-ai:hover {
+        background-color: #45a049;
+      }
+      .loading {
+        color: #666;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Hotel Feedback Form</h1>
+      <p>
+        Thank you for staying with us. Please provide feedback on your recent
+        stay.
+      </p>
+    </header>
+    <main>
+      <form method="POST" action="https://hotel-feedback.freecodecamp.org">
+        <fieldset>
+          <legend>Personal Information</legend>
+          <label for="full-name">Name (required):</label>
+          <input type="text" id="full-name" name="name" placeholder="Ex. John Doe" required size="20">
+
+          <label for="email">Email address (required):</label>
+          <input
+            placeholder="example@email.com"
+            required
+            id="email"
+            type="email"
+            name="email"
+            size="20"
+          />
+          <label for="age">Age (optional):</label>
+          <input type="number" name="age" id="age" min="3" max="100" />
+        </fieldset>
+
+        <fieldset>
+          <legend>Was this your first time at our hotel?</legend>
+          <label for="yes-option">Yes</label>
+          <input id="yes-option" type="radio" name="hotel-stay" />
+          <label for="no-option">No</label>
+          <input id="no-option" type="radio" name="hotel-stay" />
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            Why did you choose to stay at our hotel? (Check all that apply)
+          </legend>
+
+          <label for="ads">Social Media Ads</label>
+          <input type="checkbox" id="ads" name="ads" value="ads" />
+
+          <label for="recommendation">Personal Recommendation</label>
+          <input
+            type="checkbox"
+            id="recommendation"
+            name="recommendation"
+            value="recommendation"
+          />
+
+          <label for="location">Location</label>
+          <input type="checkbox" id="location" name="location" value="location" />
+
+          <label for="reputation">Reputation</label>
+          <input
+            checked
+            type="checkbox"
+            id="reputation"
+            name="reputation"
+            value="reputation"
+          />
+
+          <label for="price">Price</label>
+          <input type="checkbox" id="price" name="price" value="price" />
+        </fieldset>
+
+        <fieldset>
+          <legend>Ratings</legend>
+
+          <label for="service">How was the service?</label>
+
+          <select name="service" id="service">
+            <option value="poor">Poor</option>
+            <option value="satisfactory">Satisfactory</option>
+            <option value="good">Good</option>
+            <option value="very-good">Very Good</option>
+            <option selected value="excellent">Excellent</option>
+          </select>
+
+          <label for="food">How was the food?</label>
+
+          <select name="food" id="food">
+            <option value="poor">Poor</option>
+            <option value="satisfactory">Satisfactory</option>
+            <option value="good">Good</option>
+            <option value="very-good">Very Good</option>
+            <option selected value="excellent">Excellent</option>
+          </select>
+        </fieldset>
+
+        <label for="comments">Other Comments?</label>
+        <textarea cols="30" rows="10" name="comments" id="comments"></textarea>
+
+        <!-- AI Assistant Section -->
+        <div class="ai-section">
+          <h3>Hotel AI Assistant</h3>
+          <p>Ask our AI any questions about our hotel services or amenities:</p>
+          <input type="text" id="ai-question" placeholder="E.g. What are your check-in times?">
+          <button type="button" id="ask-ai">Ask AI</button>
+          <div class="ai-response" id="ai-response">
+            <!-- AI response will appear here -->
+          </div>
+        </div>
+
+        <button type="submit">Submit Feedback</button>
+      </form>
+    </main>
+
+    <script>
+      document.getElementById('ask-ai').addEventListener('click', async function() {
+        const question = document.getElementById('ai-question').value.trim();
+        const responseElement = document.getElementById('ai-response');
+        
+        if (!question) {
+          responseElement.textContent = 'Please enter a question.';
+          return;
+        }
+        
+        responseElement.innerHTML = '<span class="loading">Thinking...</span>';
+        
+        try {
+          // In a real implementation, you would call your backend which calls DeepSeek API
+          // This is a mock implementation for demonstration
+          const mockHotelKnowledge = [
+            "Our check-in time is 3:00 PM and check-out is at 11:00 AM.",
+            "We offer free WiFi throughout the hotel and in all rooms.",
+            "Our restaurant serves breakfast from 6:30 AM to 10:30 AM daily.",
+            "Yes, we have a swimming pool that's open from 7 AM to 9 PM.",
+            "We provide 24-hour room service for all guests.",
+            "Parking is available for $20 per night with in-and-out privileges.",
+            "We have a fitness center on the 3rd floor open 24 hours.",
+            "Pets under 25 lbs are allowed with a $50 cleaning fee per stay."
+          ];
+          
+          // Simulate API call delay
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          // Simple response logic - in reality you'd call DeepSeek API
+          const randomResponse = mockHotelKnowledge[Math.floor(Math.random() * mockHotelKnowledge.length)];
+          
+          // For a real implementation with DeepSeek API:
+          // const response = await fetch('https://api.deepseek.com/v1/chat', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //     'Authorization': 'Bearer YOUR_API_KEY'
+          //   },
+          //   body: JSON.stringify({
+          //     model: "deepseek-chat",
+          //     messages: [
+          //       {
+          //         role: "system",
+          //         content: "You are a helpful hotel assistant. Answer questions about the hotel services and amenities."
+          //       },
+          //       {
+          //         role: "user",
+          //         content: question
+          //       }
+          //     ]
+          //   })
+          // });
+          // const data = await response.json();
+          // responseElement.textContent = data.choices[0].message.content;
+          
+          responseElement.textContent = randomResponse;
+        } catch (error) {
+          console.error('Error calling AI:', error);
+          responseElement.textContent = 'Sorry, there was an error processing your question. Please try again later.';
+        }
+      });
+    </script>
+  </body>
+</html>
